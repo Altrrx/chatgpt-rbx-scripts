@@ -1,0 +1,4 @@
+c/ owner.Chatted:Connect(function(message) local billboardGui = Instance.new("BillboardGui") billboardGui.Adornee = owner.Character.HumanoidRootPart billboardGui.Size = UDim2.new(0, 200, 0, 50) billboardGui.StudsOffset = Vector3.new(0, 2, 0) local textLabel = Instance.new("TextLabel") textLabel.Text = message textLabel.Size = UDim2.new(1, 0, 1, 0) textLabel.BackgroundTransparency = 1 textLabel.TextColor3 = Color3.fromRGB(255, 255, 255) textLabel.FontSize = Enum.FontSize.Size24 textLabel.Parent = billboardGui billboardGui.Parent = owner.Character.HumanoidRootPart coroutine.wrap(function() while true do textLabel.Rotation = math.random(-15, 15) billboardGui.StudsOffset = Vector3.new(math.random(-1, 1), 2, math.random(-1, 1)) wait(0.025) end end)() wait(3) billboardGui:Destroy() end)
+
+
+

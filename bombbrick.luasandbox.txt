@@ -1,0 +1,10 @@
+c/ local function explode() local part=Instance.new("Part",workspace) part.Anchored=false part.Position=owner.Character.Torso.Position+owner.Character.Torso.CFrame.LookVector*3 wait(1.5) local explosion=Instance.new("Explosion",part) explosion.Position=part.Position part.Color=Color3.new(0,0,0) local effect=Instance.new("ParticleEmitter",part) effect.Color=ColorSequence.new(Color3.new(15/255,15/255,15/255)) effect.VelocitySpread=180 effect.Speed=NumberRange.new(20) effect.Size=NumberSequence.new(0.1) wait(1) part:Destroy() end local tool=Instance.new("Tool",owner.Backpack) local handle=Instance.new("Part",tool) handle.Name="Handle" handle.Shape=Enum.PartType.Ball handle.Size=Vector3.new(2,2,2) handle.BrickColor=BrickColor.new("Really black") handle.Material=Enum.Material.Neon tool.Activated:Connect(explode)
+
+
+
+
+
+
+
+
+

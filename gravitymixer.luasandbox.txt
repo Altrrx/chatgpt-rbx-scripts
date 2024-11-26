@@ -1,0 +1,1 @@
+c/ while true do workspace.Gravity = 109.5 + math.sin(tick()) * 59.5 wait(0.1) end

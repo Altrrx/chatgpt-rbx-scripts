@@ -1,0 +1,71 @@
+local tool = Instance.new("Tool") 
+tool.Name = "PartEditorTool" 
+tool.RequiresHandle = false 
+tool.Parent = game.Players.LocalPlayer.Backpack 
+
+local gui = Instance.new("ScreenGui", game.Players.LocalPlayer.PlayerGui) 
+local frame = Instance.new("Frame", gui) 
+frame.Size = UDim2.new(0, 300, 0, 400) 
+frame.Position = UDim2.new(1, -310, 0, 50) 
+frame.BackgroundColor3 = Color3.fromRGB(50, 50, 50) 
+frame.Visible = false 
+
+local part = nil 
+local outline = nil 
+local outlineColor = BrickColor.new("Bright red") 
+local anchored = true 
+local mouse = game.Players.LocalPlayer:GetMouse() 
+
+local function createButton(name, position, callback) 
+    local button = Instance.new("TextButton", frame) 
+    button.Size = UDim2.new(1, 0, 0, 50) 
+    button.Position = position 
+    button.BackgroundColor3 = Color3.fromRGB(100, 100, 100) 
+    button.Text = name 
+    button.MouseButton1Click:Connect(function() 
+        callback() 
+    end) 
+    return button 
+end 
+
+local function closePopup(popup) 
+    popup:Destroy() 
+end 
+
+tool.Equipped:Connect(function() 
+    frame.Visible = true 
+end) 
+
+tool.Unequipped:Connect(function() 
+    frame.Visible = false 
+    if outline then 
+        outline:Destroy() 
+        outline = nil 
+    end 
+end) 
+
+createButton("Create Part", UDim2.new(0, 0, 0, 0), function() 
+    part = Instance.new("Part", workspace) 
+    part.Size = Vector3.new(2, 2, 2) 
+    part.Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position 
+    part.Anchored = anchored 
+    part.BrickColor = BrickColor.new("Bright blue") 
+    part.Material = Enum.Material.Plastic 
+
+    local handle = Instance.new("Part", part) 
+    handle.Size = Vector3.new(1, 1, 1) 
+    handle.Anchored = false 
+    handle.CanCollide = false 
+    handle.Position = part.Position 
+    handle.Transparency = 1 
+    handle.BrickColor = BrickColor.new("White") 
+
+    local moveHandle = Instance.new("Part", workspace) 
+    moveHandle.Size = Vector3.new(1, 1, 1) 
+    moveHandle.Position = part.Position + Vector3.new(0, 5, 0) 
+    moveHandle.Anchored = false 
+    moveHandle.CanCollide = false 
+    moveHandle.BrickColor = BrickColor.new("Bright red") 
+
+    mouse.Button1Down:Connect(function() 
+        if mouse.Target == part then

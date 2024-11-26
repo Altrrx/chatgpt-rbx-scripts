@@ -1,0 +1,79 @@
+local activeParts = {}
+local maxParts = 100 -- Max 100 active parts at a time
+
+local function Shoot()
+    -- Check if the max number of parts has been reached
+    if #activeParts >= maxParts then
+        activeParts[1]:Destroy() -- Destroy the oldest part
+        table.remove(activeParts, 1) -- Remove it from the active parts list
+    end
+
+    local part = Instance.new("Part", workspace)
+    part.Position = owner.Character.Head.Position + owner.Character.Head.CFrame.LookVector * 5
+    local lookvector = owner.Character.Head.CFrame.LookVector * 2
+    part.Size = Vector3.new(1, 1, 1)
+    part.Anchored = true
+
+    -- Insert the new part into the active parts list
+    table.insert(activeParts, part)
+
+    local projectiledel = 0
+    local shots = 0
+    local maxShots = 10
+    local damageAmount = math.random(5, 15)
+
+    local light = Instance.new("PointLight", part)
+    light.Color = Color3.fromHSV(0, 1, 1)
+    light.Range = 30
+    light.Brightness = 2
+
+    -- Handle damage on touch
+    part.Touched:Connect(function(hit)
+        local character = hit.Parent
+        if game.Players:GetPlayerFromCharacter(character) then
+            local humanoid = character:FindFirstChildOfClass("Humanoid")
+            if humanoid then
+                humanoid:TakeDamage(damageAmount)
+            end
+        else
+            part:Destroy() -- Destroy the part if it hits a non-player object
+        end
+    end)
+
+    -- Automatically clean up the part after 5 seconds
+    game:GetService("Debris"):AddItem(part, 5)
+
+    -- Main movement loop
+    while wait(0.015) do
+        if shots >= maxShots then
+            break
+        end
+
+        part.Position = part.Position + lookvector
+        projectiledel = projectiledel + 0.015
+
+        if projectiledel >= 3 then
+            projectiledel = 0
+            shots = shots + 1
+        end
+    end
+end
+
+-- Tool setup
+local tool = Instance.new("Tool", owner.Backpack)
+tool.Name = "funni magik"
+tool.RequiresHandle = true
+
+local handle = Instance.new("Part", tool)
+handle.Name = "Handle"
+handle.Size = Vector3.new(1, 1, 1)
+handle.Anchored = false
+handle.CanCollide = false
+handle.Material = Enum.Material.Neon
+
+local pointLight = Instance.new("PointLight", handle)
+pointLight.Color = Color3.fromHSV(0, 1, 1)
+pointLight.Range = 10
+pointLight.Brightness = 2
+
+tool.Activated:Connect(Shoot)
